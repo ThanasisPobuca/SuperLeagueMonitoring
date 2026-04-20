@@ -251,8 +251,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (target.headers) {
             target.headers.innerHTML = headerHtml;
-            target.body.innerHTML = syntaxHighlight(JSON.stringify(data.body, null, 4));
+            
+            let bodyData = data.body;
+            // Robustness: if body is a string, try to parse it (handles double-encoded JSON)
+            if (typeof bodyData === 'string') {
+                try { bodyData = JSON.parse(bodyData); } catch(e) {}
+            }
+            target.body.innerHTML = syntaxHighlight(JSON.stringify(bodyData, null, 4));
         } else if (target.container) {
+            let bodyData = data.body;
+            if (typeof bodyData === 'string') {
+                try { bodyData = JSON.parse(bodyData); } catch(e) {}
+            }
             target.container.innerHTML = `
                 <div class="card" style="padding: 1rem;">
                     <h3 style="margin-bottom: 1rem; color: var(--accent-color);">${target.title}</h3>
@@ -260,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         ${headerHtml}
                     </div>
                     <div class="json-container" style="max-height: 400px; overflow-y: auto;">
-                        <pre style="font-size: 0.75rem;">${syntaxHighlight(JSON.stringify(data.body, null, 2))}</pre>
+                        <pre style="font-size: 0.75rem;">${syntaxHighlight(JSON.stringify(bodyData, null, 2))}</pre>
                     </div>
                 </div>
             `;
