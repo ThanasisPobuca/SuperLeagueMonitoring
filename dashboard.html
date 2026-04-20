@@ -30,6 +30,9 @@
                     <p class="subtitle" id="viewSubtitle">Real-time snapshots and history monitoring</p>
                 </div>
                 <div style="display: flex; gap: 1rem; align-items: center;">
+                    <button id="compareBtn" class="btn-secondary" style="display: none; width: auto; padding: 0.75rem 1.5rem; margin-top: 0;">
+                        Compare Selected (<span id="compareCount">0</span>)
+                    </button>
                     <button id="snapshotBtn" class="btn-primary" style="margin-top: 0; width: auto; padding: 0.75rem 1.5rem;">
                         <span class="btn-text">Snapshot Now</span>
                         <span class="loader" id="snapshotLoader" style="display: none;"></span>
@@ -44,14 +47,17 @@
                 <div class="card">
                     <div class="card-header">
                         <h3>Snapshot History</h3>
-                        <button id="refreshBtn" class="btn-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-                        </button>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button id="refreshBtn" class="btn-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                            </button>
+                        </div>
                     </div>
                     <div class="table-container">
                         <table id="historyTable">
                             <thead>
                                 <tr>
+                                    <th style="width: 40px;">Select</th>
                                     <th>Snapshot ID</th>
                                     <th>Date</th>
                                     <th>Timestamp</th>
@@ -61,17 +67,45 @@
                             </thead>
                             <tbody id="historyBody">
                                 <!-- Data will be injected here -->
-                                <tr>
-                                    <td colspan="5" style="text-align: center; padding: 3rem; color: var(--text-secondary);">
-                                        Loading history...
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </section>
         </main>
+    </div>
+
+    <!-- Detail Modal -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Snapshot Details</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="headerBoxes" class="header-boxes-grid">
+                    <!-- Boxes will be injected here -->
+                </div>
+                <div class="json-container">
+                    <h3>Payload Body</h3>
+                    <pre id="jsonBody"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comparison Modal -->
+    <div id="compareModal" class="modal modal-large">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Compare Snapshots</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body comparison-grid">
+                <div id="compareLeft" class="compare-column"></div>
+                <div id="compareRight" class="compare-column"></div>
+            </div>
+        </div>
     </div>
 
     <div id="toast" class="toast"></div>
