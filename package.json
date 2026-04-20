@@ -1,0 +1,13 @@
+{
+  "name": "superleague-monitoring",
+  "version": "1.0.0",
+  "description": "Simple analytics dashboard for Super League",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'Skipping build step...'",
+    "start": "npx serve ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
