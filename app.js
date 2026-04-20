@@ -253,15 +253,41 @@ document.addEventListener('DOMContentLoaded', () => {
             target.headers.innerHTML = headerHtml;
             
             let bodyData = data.body;
-            // Robustness: if body is a string, try to parse it (handles double-encoded JSON)
-            if (typeof bodyData === 'string') {
-                try { bodyData = JSON.parse(bodyData); } catch(e) {}
+            // Aggressive unwrapping: handles double/triple encoded JSON strings
+            for (let i = 0; i < 5; i++) {
+                if (typeof bodyData === 'string' && bodyData.trim()) {
+                    try {
+                        const parsed = JSON.parse(bodyData);
+                        if (parsed !== null && parsed !== undefined) {
+                            bodyData = parsed;
+                        } else {
+                            break;
+                        }
+                    } catch (e) {
+                        break;
+                    }
+                } else {
+                    break;
+                }
             }
             target.body.innerHTML = syntaxHighlight(JSON.stringify(bodyData, null, 4));
         } else if (target.container) {
             let bodyData = data.body;
-            if (typeof bodyData === 'string') {
-                try { bodyData = JSON.parse(bodyData); } catch(e) {}
+            for (let i = 0; i < 5; i++) {
+                if (typeof bodyData === 'string' && bodyData.trim()) {
+                    try {
+                        const parsed = JSON.parse(bodyData);
+                        if (parsed !== null && parsed !== undefined) {
+                            bodyData = parsed;
+                        } else {
+                            break;
+                        }
+                    } catch (e) {
+                        break;
+                    }
+                } else {
+                    break;
+                }
             }
             target.container.innerHTML = `
                 <div class="card" style="padding: 1rem;">
